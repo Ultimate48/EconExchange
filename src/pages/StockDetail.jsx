@@ -49,30 +49,19 @@ export default function StockDetail() {
 
   const rawHistory = data?.history || []
 
-  // Dynamic timeframe data filtering
+  // Dynamic timeframe data filtering — full 15-min resolution everywhere
   const chartData = (() => {
     if (!rawHistory.length) return []
-    const latestTs = rawHistory[rawHistory.length - 1].timestamp
-    const secInDay = 86400
 
     if (timeframe === '1D') {
-      const cutoff = latestTs - secInDay
-      const sliced = rawHistory.filter(d => d.timestamp >= cutoff)
-      return sliced.length ? sliced : rawHistory.slice(-26)
+      // Last ~26 points ≈ one trading session of 15-min candles
+      return rawHistory.slice(-26)
     }
     if (timeframe === '1W') {
-      const cutoff = latestTs - (7 * secInDay)
-      const sliced = rawHistory.filter(d => d.timestamp >= cutoff)
-      return sliced.length ? sliced : rawHistory.slice(-182)
+      // Last ~182 points ≈ 7 trading days of 15-min candles
+      return rawHistory.slice(-182)
     }
-    if (timeframe === '1M') {
-      const cutoff = latestTs - (30 * secInDay)
-      return rawHistory.filter(d => d.timestamp >= cutoff)
-    }
-    if (timeframe === '3M') {
-      const cutoff = latestTs - (90 * secInDay)
-      return rawHistory.filter(d => d.timestamp >= cutoff)
-    }
+    // 1M and MAX — return all raw data at full 15-min resolution
     return rawHistory
   })()
 
@@ -132,7 +121,7 @@ export default function StockDetail() {
                 </span>
                 {/* 09. CHART Timeframe Selector Tabs */}
                 <div className="flex gap-2">
-                  {['1D', '1W', '1M', '3M', '1Y', 'All'].map(tf => (
+                  {['1D', '1W', '1M', 'MAX'].map(tf => (
                     <button
                       key={tf}
                       type="button"
@@ -158,12 +147,17 @@ export default function StockDetail() {
                           if (timeframe === '1D') {
                             return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
                           }
-                          return `${d.getDate()}/${d.getMonth() + 1}`
+                          if (timeframe === '1W') {
+                            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+                            return `${days[d.getDay()]} ${String(d.getHours()).padStart(2, '0')}:00`
+                          }
+                          return `${d.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]}`
                         }}
                         tick={{ fontSize: 10, fill: '#64748B' }}
                         tickLine={false}
                         axisLine={{ stroke: '#E2E8F0' }}
                         interval="preserveStartEnd"
+                        minTickGap={40}
                       />
                       <YAxis
                         domain={['auto', 'auto']}
