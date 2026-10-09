@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import PublicDashboard from './pages/PublicDashboard'
 import PublicTrades from './pages/PublicTrades'
+import PublicLearn from './pages/PublicLearn'
+import TeamPage from './pages/TeamPage'
 import Login from './pages/Login'
 import MemberDashboard from './pages/MemberDashboard'
 import StockDetail from './pages/StockDetail'
@@ -14,6 +16,7 @@ export default function App() {
       {/* Public routes (Dedicated /public namespace) */}
       <Route path="/public/dashboard" element={<PublicDashboard />} />
       <Route path="/public/trades" element={<PublicTrades />} />
+      <Route path="/public/learn" element={<PublicLearn />} />
 
       {/* Legacy redirects for backwards compatibility */}
       <Route path="/" element={<Navigate to="/public/dashboard" replace />} />
@@ -61,6 +64,15 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Notifications />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/team"
+        element={
+          <ProtectedRoute>
+            <TeamPage />
           </ProtectedRoute>
         }
       />

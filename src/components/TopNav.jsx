@@ -62,6 +62,26 @@ function LogIcon() {
   )
 }
 
+function TeamIcon() {
+  return (
+    <svg className="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  )
+}
+
+function LearnIcon() {
+  return (
+    <svg className="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  )
+}
+
 function GlobeIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -85,7 +105,7 @@ function TerminalIcon() {
 const roleLabels = {
   exec_board: 'Exec Board',
   core: 'Core Team',
-  junior: 'Junior Analyst',
+  member: 'Member',
 }
 
 export default function TopNav({ variant = 'app' }) {
@@ -159,6 +179,10 @@ export default function TopNav({ variant = 'app' }) {
                 <LogIcon />
                 <span>Trade Log</span>
               </NavLink>
+              <NavLink to="/public/learn" onClick={() => setMobileMenuOpen(false)}>
+                <LearnIcon />
+                <span>Learn</span>
+              </NavLink>
             </>
           ) : (
             <>
@@ -173,6 +197,10 @@ export default function TopNav({ variant = 'app' }) {
               <NavLink to="/trade/new" onClick={() => setMobileMenuOpen(false)}>
                 <TradeIcon />
                 <span>New Trade</span>
+              </NavLink>
+              <NavLink to="/team" onClick={() => setMobileMenuOpen(false)}>
+                <TeamIcon />
+                <span>Team</span>
               </NavLink>
             </>
           )}
@@ -288,11 +316,15 @@ export default function TopNav({ variant = 'app' }) {
           <>
             <NavLink to="/public/dashboard" end className={({ isActive }) => (isActive ? 'active' : '')}>
               <DashboardIcon />
-              <span>Leaderboard</span>
+              <span>Board</span>
             </NavLink>
             <NavLink to="/public/trades" className={({ isActive }) => (isActive ? 'active' : '')}>
               <LogIcon />
-              <span>Trade Log</span>
+              <span>Trades</span>
+            </NavLink>
+            <NavLink to="/public/learn" className={({ isActive }) => (isActive ? 'active' : '')}>
+              <LearnIcon />
+              <span>Learn</span>
             </NavLink>
           </>
         ) : (
@@ -308,6 +340,10 @@ export default function TopNav({ variant = 'app' }) {
             <NavLink to="/trade/new" className={({ isActive }) => (isActive ? 'active' : '')}>
               <TradeIcon />
               <span>Execute</span>
+            </NavLink>
+            <NavLink to="/team" className={({ isActive }) => (isActive ? 'active' : '')}>
+              <TeamIcon />
+              <span>Team</span>
             </NavLink>
             <NavLink to="/notifications" className={({ isActive }) => (isActive ? 'active' : '')}>
               <div style={{ position: 'relative', display: 'inline-block' }}>
